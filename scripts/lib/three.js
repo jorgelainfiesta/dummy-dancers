@@ -1,3 +1,3 @@
-define( ["threeCore", "OrbitControls"], function( threeCore ) { 
+define( ["threeCore", "OrbitControls", "JSARExtensions"], function( threeCore ) { 
   return threeCore;
 } );

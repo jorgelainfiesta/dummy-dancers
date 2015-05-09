@@ -7,7 +7,13 @@
 		<link rel="stylesheet" href="stylesheets/bootstrap-tour-standalone.min.css">
 	</head>
 	<body>
-
+        <video id="inputStream" width="320" height="240" autoplay="autoplay" style="display: none"></video>
+        <img id="inputImage" width="320" height="240" src="images/static.png" style="display: none"/>
+        <canvas id="inputCapture" width="320" height="240" style="display: block"></canvas>
+        <canvas id="debugCanvas" width="320" height="240" style="display: block"></canvas>
+        
+        <div id="result"></div>
+<!--        <script src='scripts/lib/JSARToolKit.min.js'></script>-->
 		<script src="scripts/lib/require.js" data-main="scripts/app.js"></script>
 	</body>
 </html>

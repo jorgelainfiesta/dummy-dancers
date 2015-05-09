@@ -1,4 +1,4 @@
-define(['./animation', './renderer', './gui', 'tour'], function (animation, renderer) {
+define(['jquery','./animation', './renderer', './gui', 'tour'], function ($, animation, renderer) {
 
   var tour = new Tour({
     backdrop : false,
@@ -38,5 +38,5 @@ define(['./animation', './renderer', './gui', 'tour'], function (animation, rend
   animation.animate();
   
   //Insert into body
-  document.body.appendChild(renderer.domElement);
+  $("#result").append(renderer.domElement);
 });

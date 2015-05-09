@@ -9,12 +9,27 @@ requirejs.config({
     app: '../app',
     three: 'three',
     threeCore: 'three.min',
-    OrbitControls: 'OrbitControls'
+    OrbitControls: 'OrbitControls',
+    JSARToolKit: 'JSARToolKit.min',
+    JSARExtensions : 'JsArExtensions'
   },
   shim : {
     tour : ['jquery'],
     threeCore: {exports: 'THREE'},
-    OrbitControls: { deps: ['threeCore'], exports: 'THREE' }
+    OrbitControls: { deps: ['threeCore'], exports: 'THREE' },
+    JSARExtensions: {deps: ['threeCore'], exports: 'THREE' },
+    
+    JSARToolKit: {
+      exports: 'FLARParam',
+      init: function(){
+        return {
+          FLARParam: FLARParam,
+          FLARMultiIdMarkerDetector: FLARMultiIdMarkerDetector,
+          NyARRgbRaster_Canvas2D: NyARRgbRaster_Canvas2D,
+          NyARTransMatResult: NyARTransMatResult
+        }
+      }
+    }
   }
 });
 

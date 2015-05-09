@@ -4,5 +4,8 @@ define(['three', './data'], function(THREE, data){
   var topView = new THREE.PerspectiveCamera(45, (data.get('opts.swidth') / data.get('opts.sheight')), data.get('opts.near'), data.get('opts.far')*2);
   topView.position.set(0, 2000, 0);
   
-  return {'topView' : topView};
+  var overlayCamera = new THREE.Camera();
+  var inputCamera = new THREE.Camera();
+  
+  return {overlayCamera: overlayCamera, inputCamera: inputCamera};
 });
