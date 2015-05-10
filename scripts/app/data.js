@@ -3,6 +3,16 @@ define(['./opts'], function (opts) {
     dancer1: {
       url: 'models/dancer1.json'
     },
+    models: {
+      speaker: 'models/speaker.json',
+      djtop: 'models/dj_top.json',
+      djbottom: 'models/dj_bottom.json',
+      test: 'models/lighthouse.json',
+      lamp: 'models/lamp.json'
+    },
+    textures: {
+      floor: 'images/floor.jpg'
+    },
     opts: opts
   };
   

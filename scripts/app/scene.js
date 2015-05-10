@@ -1,11 +1,14 @@
 define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", "./renderer"], function (THREE, JSARToolKit, $, materials, data, cameras, renderer) {
   var scene, clock = new THREE.Clock();
-  window.DEBUG = true;
+  window.DEBUG = false;
   if (window.DEBUG) {
       $("#debugCanvas").show();
   }
-  var width = 320;
-  var height = 240;
+  var width = data.get('opts.swidth');
+  var height = data.get('opts.sheight');
+  
+  $('#inputCapture').attr('width', width);
+  $('#inputCapture').attr('height', height);
   //Set up JSARToolKit
   var markerWidth = 10;
   var parameters = new JSARToolKit.FLARParam(width, height);
@@ -16,30 +19,33 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
   // so the overlay will line up with what the detector is 'seeing')
   cameras.overlayCamera.setJsArMatrix(parameters);
 
-  
-  //Set up fog
-//  var fog =  new THREE.Fog(0xceeaff, 1, data.get('opts.far')*1.7);
-//  scene.fog = fog;
 
   //Set up lights
   
   //Add a light in sky
-  var hemispherelight = new THREE.HemisphereLight(0xd6e7ff, 0x9ad7f7, 1);
   
-  //Add point light closer to scene
-  var light = new THREE.PointLight( 0xffffff, 1, 500);
-  light.position.set(500, 500, 500);
+  var ambientLight = new THREE.AmbientLight(0x555555);
+  var directionalLight = new THREE.DirectionalLight(0xffffff);
+  directionalLight.position.set(0.3, 0.5, 2);
+  cameras.overlayCamera.add(directionalLight);
   
   //Set up main plane
-  var geometry = new THREE.PlaneBufferGeometry(10, 10, 32 );
-  var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-  var basePlane = new THREE.Mesh( geometry, material );
+  var floorTexture	= THREE.ImageUtils.loadTexture(data.get('textures.floor'));
+  var floorMaterial = new THREE.MeshLambertMaterial( {color: 0x3e3e3e, map: floorTexture} );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+  floorTexture.repeat.set(2, 2);
+  
+  
+  var geometry = new THREE.PlaneBufferGeometry(15, 15, 32 );
+  var material = new THREE.MeshLambertMaterial( {color: 0x3e3e3e, side: THREE.DoubleSide} );
+  var basePlane = new THREE.Mesh( geometry, floorMaterial );
+  
   basePlane.rotation.x = Math.Pi * 0.5;
   basePlane.matrixAutoUpdate = false;
   
   //Set up scene
   var overlayScene = new THREE.Scene();
-  overlayScene.add(hemispherelight);
+  overlayScene.add(ambientLight);
   overlayScene.add(basePlane);
   overlayScene.add(cameras.overlayCamera);
 //  overlayScene.add(fog);
@@ -87,6 +93,81 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
       ready = true;
   });
   
+  //Load scene objects for decoration
+  var loader = new THREE.JSONLoader;
+  //Load speaker
+  loader.load(data.get('models.speaker'), function (geometry, materials) {
+    var mesh = new THREE.Mesh(
+      geometry,
+      new THREE.MeshFaceMaterial(materials)
+    );
+    mesh.rotation.x = -Math.PI * 0.5;
+    mesh.rotation.y = Math.PI * 0.5;
+    mesh.scale.set(2, 2, 2);
+    mesh.position.set(-5, -5, 0);
+    basePlane.add(mesh);
+    //Second speaker
+    var mesh = new THREE.Mesh(
+      geometry,
+      new THREE.MeshFaceMaterial(materials)
+    );
+    mesh.rotation.x = -Math.PI * 0.5;
+    mesh.rotation.y = Math.PI * 0.5;
+    mesh.scale.set(2, 2, 2);
+    mesh.position.set(-5, 5, 0);
+    basePlane.add(mesh);
+  });
+  
+  //Load DJ bottom
+  loader.load(data.get('models.djbottom'), function (geometry, materials) {
+    var bottom = new THREE.Mesh(
+      geometry,
+      new THREE.MeshFaceMaterial(materials)
+    );
+    bottom.rotation.set(-Math.PI * 0.5, -Math.PI * 0.5, 0);
+    bottom.scale.set(2, 2, 2);
+    bottom.position.set(-5, -5, 0);
+    basePlane.add(bottom);
+    //Load DJ top
+    loader.load(data.get('models.djtop'), function (geometry, materials) {
+      var mesh = new THREE.Mesh(
+        geometry,
+        new THREE.MeshFaceMaterial(materials)
+      );
+      bottom.add(mesh);
+    });
+
+  });
+  
+  var lamp;
+  //Load lamp
+  loader.load(data.get('models.lamp'), function (geometry, materials) {
+    var mesh = new THREE.Mesh(
+      geometry,
+      new THREE.MeshFaceMaterial(materials)
+    );
+    mesh.rotation.x = -Math.PI * 0.5;
+    mesh.position.z = -10;
+    basePlane.add(mesh);
+    
+    var light = new THREE.PointLight(0x001dff, 1, 100 );
+    light.position.set(10, 0, 0);
+    mesh.add(light);
+    
+    var light = new THREE.PointLight(0x00ffe2, 1, 100 );
+    light.position.set(-10, 0, 0);
+    mesh.add(light);
+    
+    var light = new THREE.PointLight(0xffba00, 1, 100 );
+    light.position.set(0, 10, 0);
+    mesh.add(light);
+    
+    var light = new THREE.PointLight(0x9d00ff, 1, 100 );
+    light.position.set(0, -10, 0);
+    mesh.add(light);
+    
+    lamp = mesh;
+  });
   
   //Function to update scene elements
   var updateScene = function(){
@@ -109,6 +190,8 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
           basePlane.setJsArMatrix(resultMatrix);
           basePlane.matrixWorldNeedsUpdate = true;
       }
+      
+      lamp.rotation.y += 0.1;
     }
     
   };
