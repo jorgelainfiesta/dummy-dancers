@@ -1,4 +1,4 @@
-define(['jquery','./animation', './renderer', './gui', 'tour'], function ($, animation, renderer) {
+define(['jquery', './animation', './renderer', './gui', 'tour'], function ($, animation, renderer) {
 
   var tour = new Tour({
     backdrop : false,
@@ -33,6 +33,7 @@ define(['jquery','./animation', './renderer', './gui', 'tour'], function ($, ani
   // Start the tour
 //  tour.start();
 
+  
   
   //Run animate
   animation.animate();

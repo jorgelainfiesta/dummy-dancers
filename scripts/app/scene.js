@@ -87,7 +87,7 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
       // Start the animation loop (see below)
 //      jsFrames.start();
   }, function () {
-      alert("Couldn't access webcam. Fallback to static image");
+//      alert("Couldn't access webcam. Fallback to static image");
       input = $('#inputImage')[0];
 //      jsFrames.start();
       ready = true;
@@ -196,5 +196,5 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
     
   };
   
-  return {overlayScene : overlayScene, inputScene: inputScene, update : updateScene};
+  return {overlayScene : overlayScene, inputScene: inputScene, update : updateScene, basePlane: basePlane};
 });

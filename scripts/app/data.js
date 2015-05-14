@@ -1,21 +1,32 @@
 define(['./opts'], function (opts) {
   var data = {
-    dancer1: {
-      url: 'models/dancer1.json'
+    alien: {
+      active : false
     },
+    currentDance: 0,
+    danceRate: 5,
+    animLength: 100,
     models: {
       speaker: 'models/speaker.json',
       djtop: 'models/dj_top.json',
       djbottom: 'models/dj_bottom.json',
       test: 'models/lighthouse.json',
-      lamp: 'models/lamp.json'
+      lamp: 'models/lamp.json',
+      alien: 'models/alien.json'
     },
     textures: {
       floor: 'images/floor.jpg'
     },
+    audioParams: {
+      useMic: false,
+      useSample:true,
+      volSens:1,
+      beatHoldTime:40,
+      beatDecayRate:0.97,
+      sampleURL: "audio/summer.mp3"
+    },
     opts: opts
   };
-  
   
   //Use a resolver to have a better control of the data we send
   function get(param) {
