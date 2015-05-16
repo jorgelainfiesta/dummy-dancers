@@ -213,7 +213,7 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
   var floorColors = [
     0x55d42d,
     0x3cfbcf,
-    0x5c88ff,
+    0x2a95ff,
     0x89ecfd,
     0x31f0b5
   ];
