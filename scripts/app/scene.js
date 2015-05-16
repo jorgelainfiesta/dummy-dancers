@@ -64,7 +64,7 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
     
     //Make color plane
     var geometry = new THREE.CircleGeometry(9 - i - 0.5, 64);
-    var material = new THREE.MeshPhongMaterial( {color: 0x23eeff, emissive: 0x23ff99,
+    var material = new THREE.MeshPhongMaterial( {color: 0x23eeff,
                                                  side: THREE.DoubleSide, specular: 0xff4523,
                                                  transparent: true, opacity: 0.5} );
     var levelPlane = new THREE.Mesh(geometry, material);
@@ -210,6 +210,13 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
     lamp = mesh;
   });
   
+  var floorColors = [
+    0x55d42d,
+    0x3cfbcf,
+    0x5c88ff,
+    0x89ecfd,
+    0x31f0b5
+  ];
   //Function to update scene elements
   var updateScene = function(){
     
@@ -236,10 +243,18 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
       speaker1.position.z = -Math.exp(data.get('danceRate'));
       speaker2.position.z = -Math.exp(data.get('danceRate'));
       
+      
       var audioLevels = data.get('audioLevels');
       for(var l = 0; l < levels.length; l++){
+        if(data.get('changeColor')){
+          var ncolor = floorColors[parseInt(Math.random() * floorColors.length)];
+          levels[l].material.color.setHex(ncolor);
+        }
+        
         levels[l].material.opacity = audioLevels[levels.length - l - 1];
+        
       }
+      data.set('changeColor', false);
     }
     
   };

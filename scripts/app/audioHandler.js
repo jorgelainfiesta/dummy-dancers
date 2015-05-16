@@ -304,6 +304,7 @@ define(['./data'], function(data){
 			onBeat();
 			beatCutOff = level *1.1;
 			beatTime = 0;
+            data.set('changeColor', level);
 		}else{
 			if (beatTime <= data.get('audioParams.beatHoldTime')){
 				beatTime ++;

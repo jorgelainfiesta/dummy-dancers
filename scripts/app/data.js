@@ -2,10 +2,11 @@ define(['./opts'], function (opts) {
   var data = {
     loaded: 0,
     totalLoads: 7,
-    currentDance: 0,
+    currentDance: 100,
     danceRate: 0.1,
     animLength: 100,
     audioLevels: [],
+    changeColor: false,
     models: {
       speaker: 'models/speaker.json',
       djtop: 'models/dj_top.json',
