@@ -113,9 +113,8 @@ define(['three', './scene', './renderer', './cameras', './data', './audioHandler
   });
   
   var clock = new THREE.Clock();
+  var pastHalf = false;
 
-  AudioHandler.init();
-  AudioHandler.onUseSample();
   var animRate = Math.exp(data.get('danceRate') * 6);
   function animate() {
     requestAnimationFrame(animate);
@@ -124,12 +123,14 @@ define(['three', './scene', './renderer', './cameras', './data', './audioHandler
       AudioHandler.update();
       for(var i in animations){
         var animation = animations[i];
-       animation.update(animRate);
+        animation.update(animRate);
       
-        if(animation.currentTime >= data.get('currentDance') + 50 && animation.currentTime <= data.get('currentDance') + 60) {
+        if(animation.currentTime >= data.get('currentDance') + 50 && !pastHalf) {
           animation.reset();
           animation.resetBlendWeights();
-          animation.currentTime = data.get('currentDance') + 61;
+          animation.currentTime = data.get('currentDance') + 50;
+          console.info("half reached");
+          pastHalf = true;
         }
         if(animation.currentTime >= data.get('currentDance') + 100){
           animation.reset();
@@ -137,6 +138,7 @@ define(['three', './scene', './renderer', './cameras', './data', './audioHandler
           animation.play();
           animation.currentTime = data.get('currentDance');
           animRate = Math.exp(data.get('danceRate') * 6);
+          pastHalf = false;
         }
       }
      

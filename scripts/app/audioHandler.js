@@ -172,7 +172,6 @@ define(['./data'], function(data){
 	}
 	//load dropped MP3
 	function onMP3Drop(evt) {
-
 		//TODO - uncheck mic and sample in CP
 
         data.set('audioParams.useSample', false);

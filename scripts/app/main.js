@@ -1,4 +1,4 @@
-define(['jquery', './animation', './renderer', './gui', 'tour'], function ($, animation, renderer) {
+define(['jquery', './animation', './renderer', 'tour', './audioHandler'], function ($, animation, renderer, tour, AudioHandler) {
 
   var tour = new Tour({
     backdrop : false,
@@ -33,10 +33,31 @@ define(['jquery', './animation', './renderer', './gui', 'tour'], function ($, an
   // Start the tour
 //  tour.start();
 
+  document.onselectstart = function() {
+    return false;
+  };
+  document.addEventListener('drop', onDocumentDrop, false);
+  document.addEventListener('dragover', onDocumentDragOver, false);
+
+  function onDocumentDragOver(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    return false;
+  }
+  //load dropped MP3
+  function onDocumentDrop(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    AudioHandler.onMP3Drop(evt);
+  }
   
+  AudioHandler.init();
+  AudioHandler.onUseSample();
   
   //Run animate
   animation.animate();
+  
+  
   
   //Insert into body
   $("#result").append(renderer.domElement);
