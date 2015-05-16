@@ -19,7 +19,9 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
   // so the overlay will line up with what the detector is 'seeing')
   cameras.overlayCamera.setJsArMatrix(parameters);
 
-
+  //Set up fog
+  var fog =  new THREE.Fog(0x2d3e4b, 1, 100);
+  
   //Set up lights
   
   //Add a light in sky
@@ -36,18 +38,48 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
   floorTexture.repeat.set(2, 2);
   
   
-  var geometry = new THREE.PlaneBufferGeometry(15, 15, 32 );
-  var material = new THREE.MeshLambertMaterial( {color: 0x3e3e3e, side: THREE.DoubleSide} );
+  var geometry = new THREE.CircleGeometry(9, 64);
   var basePlane = new THREE.Mesh( geometry, floorMaterial );
   
   basePlane.rotation.x = Math.Pi * 0.5;
   basePlane.matrixAutoUpdate = false;
+  
+//  var circleGeom = new THREE.CircleGeometry(5, 64);
+//  var colorMat = new THREE.MeshBasicMaterial( {color: 0xffff00,  side: THREE.DoubleSide} );
+//  var planeNew = new THREE.Mesh( circleGeom, colorMat );
+//  planeNew.position.z = -1;
+//  basePlane.add(planeNew);
+//  
+  
+  //Level planes
+  
+   var levels = []
+  for(var i = 0; i < 7; i++){
+    
+    //Make contrast plane
+    var geometry = new THREE.CircleGeometry(9 - i, 64);
+    var contrastPlane = new THREE.Mesh( geometry, floorMaterial);
+    contrastPlane.position.z = -0.1 * i;
+    basePlane.add(contrastPlane);
+    
+    //Make color plane
+    var geometry = new THREE.CircleGeometry(9 - i - 0.5, 64);
+    var material = new THREE.MeshPhongMaterial( {color: 0x23eeff, emissive: 0x23ff99,
+                                                 side: THREE.DoubleSide, specular: 0xff4523,
+                                                 transparent: true, opacity: 0.5} );
+    var levelPlane = new THREE.Mesh(geometry, material);
+    levelPlane.position.z = -0.1 * i  - 0.05;
+    basePlane.add(levelPlane);
+    levels.push(levelPlane);
+    
+  }
   
   //Set up scene
   var overlayScene = new THREE.Scene();
   overlayScene.add(ambientLight);
   overlayScene.add(basePlane);
   overlayScene.add(cameras.overlayCamera);
+  overlayScene.fog = fog;
 //  overlayScene.add(fog);
   
   // This is the canvas that we draw our input image on & pass
@@ -76,64 +108,72 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
 
   // Get permission to use the webcam video stream as input to the detector
   // (Otherwise we can fallback to a static image for the input)
-  var ready = false;
   var input;
   navigator.getUserMedia({ 'video': true }, function (stream) {
       input = $('#inputStream')
       input.attr('src', window.URL.createObjectURL(stream));
       input = input[0];
-      ready = true;
-    console.log(input);
-      // Start the animation loop (see below)
-//      jsFrames.start();
+      data.increment('loaded');
   }, function () {
 //      alert("Couldn't access webcam. Fallback to static image");
       input = $('#inputImage')[0];
-//      jsFrames.start();
-      ready = true;
+      data.increment('loaded');
   });
   
   //Load scene objects for decoration
   var loader = new THREE.JSONLoader;
   //Load speaker
+  var speaker1;
+  var speaker2;
   loader.load(data.get('models.speaker'), function (geometry, materials) {
-    var mesh = new THREE.Mesh(
+    data.increment('loaded');
+    speaker1 = new THREE.Mesh(
       geometry,
       new THREE.MeshFaceMaterial(materials)
     );
-    mesh.rotation.x = -Math.PI * 0.5;
-    mesh.rotation.y = Math.PI * 0.5;
-    mesh.scale.set(2, 2, 2);
-    mesh.position.set(-5, -5, 0);
-    basePlane.add(mesh);
+    speaker1.rotation.x = -Math.PI * 0.5;
+    speaker1.rotation.y = Math.PI * 0.5;
+    speaker1.scale.set(3, 3, 3);
+    speaker1.position.set(-5, -5, 0);
+    basePlane.add(speaker1);
     //Second speaker
-    var mesh = new THREE.Mesh(
+    speaker2 = new THREE.Mesh(
       geometry,
       new THREE.MeshFaceMaterial(materials)
     );
-    mesh.rotation.x = -Math.PI * 0.5;
-    mesh.rotation.y = Math.PI * 0.5;
-    mesh.scale.set(2, 2, 2);
-    mesh.position.set(-5, 5, 0);
-    basePlane.add(mesh);
+    speaker2.rotation.x = -Math.PI * 0.5;
+    speaker2.rotation.y = Math.PI * 0.5;
+    speaker2.scale.set(3, 3, 3);
+    speaker2.position.set(-5, 5, 0);
+    basePlane.add(speaker2);
   });
   
   //Load DJ bottom
   loader.load(data.get('models.djbottom'), function (geometry, materials) {
+    data.increment('loaded');
     var bottom = new THREE.Mesh(
       geometry,
       new THREE.MeshFaceMaterial(materials)
     );
     bottom.rotation.set(-Math.PI * 0.5, -Math.PI * 0.5, 0);
     bottom.scale.set(2, 2, 2);
-    bottom.position.set(-5, -5, 0);
+    bottom.position.set(-3, -5, 0);
     basePlane.add(bottom);
+    
     //Load DJ top
     loader.load(data.get('models.djtop'), function (geometry, materials) {
       var mesh = new THREE.Mesh(
         geometry,
         new THREE.MeshFaceMaterial(materials)
       );
+      
+      var material = new THREE.MeshBasicMaterial({
+          color: 0x0000ff
+      });
+      var circleGeometry = new THREE.CircleGeometry(5, 32 );				
+      var circle = new THREE.Mesh( circleGeometry, material );
+      circle.rotation.x = -Math.PI * 0.5;
+      bottom.add(circle);
       bottom.add(mesh);
     });
 
@@ -142,6 +182,7 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
   var lamp;
   //Load lamp
   loader.load(data.get('models.lamp'), function (geometry, materials) {
+    data.increment('loaded');
     var mesh = new THREE.Mesh(
       geometry,
       new THREE.MeshFaceMaterial(materials)
@@ -172,7 +213,7 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
   //Function to update scene elements
   var updateScene = function(){
     
-    if(ready){
+    if(data.get('loaded') == data.get('totalLoads')){
       // Capture the current frame from the inputStream
       inputCapture.getContext('2d').drawImage(input, 0, 0, width, height);
 
@@ -190,8 +231,15 @@ define(["three", 'JSARToolKit', 'jquery', "./materials", "./data", "./cameras", 
           basePlane.setJsArMatrix(resultMatrix);
           basePlane.matrixWorldNeedsUpdate = true;
       }
+      //Scene animations
+      lamp.rotation.y += (Math.exp(data.get('danceRate')) - 1) * 0.4;
+      speaker1.position.z = -Math.exp(data.get('danceRate'));
+      speaker2.position.z = -Math.exp(data.get('danceRate'));
       
-      lamp.rotation.y += 0.1;
+      var audioLevels = data.get('audioLevels');
+      for(var l = 0; l < levels.length; l++){
+        levels[l].material.opacity = audioLevels[levels.length - l - 1];
+      }
     }
     
   };

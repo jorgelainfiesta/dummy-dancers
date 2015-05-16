@@ -1,18 +1,20 @@
 define(['./opts'], function (opts) {
   var data = {
-    alien: {
-      active : false
-    },
+    loaded: 0,
+    totalLoads: 7,
     currentDance: 0,
-    danceRate: 5,
+    danceRate: 0.1,
     animLength: 100,
+    audioLevels: [],
     models: {
       speaker: 'models/speaker.json',
       djtop: 'models/dj_top.json',
       djbottom: 'models/dj_bottom.json',
       test: 'models/lighthouse.json',
       lamp: 'models/lamp.json',
-      alien: 'models/alien.json'
+      alien: 'models/alien.json',
+      robot: 'models/robot.json',
+      penguin: 'models/penguin.json'
     },
     textures: {
       floor: 'images/floor.jpg'
@@ -72,6 +74,9 @@ define(['./opts'], function (opts) {
   }
   
   function increment(param, diff) {
+    if(diff === undefined){
+      diff = 1;
+    }
     this.set(param, this.get(param) + diff);
   }
   //We only expose the get setting

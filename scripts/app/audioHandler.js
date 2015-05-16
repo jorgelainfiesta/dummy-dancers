@@ -250,6 +250,7 @@ define(['./data'], function(data){
 		gotBeat = true;
 		if (data.get('audioParams.bpmMode')) return;
 //		events.emit("onBeat");
+//        data.set('danceBeat', true);
 	}
 
 
@@ -281,7 +282,7 @@ define(['./data'], function(data){
 
 			//adjust for the fact that lower levels are percieved more quietly
 			//make lower levels smaller
-			//levelsData[i] *=  1 + (i/levelsCount)/2;
+			levelsData[i] *=  1 + (i/levelsCount)/2;
 		}
 		//TODO - cap levels at 1?
 
@@ -293,6 +294,7 @@ define(['./data'], function(data){
 		
 		level = sum / levelsCount;
         data.set('danceRate', level);
+        data.set('audioLevels', levelsData);
 
 		levelHistory.push(level);
 		levelHistory.shift(1);
@@ -313,6 +315,7 @@ define(['./data'], function(data){
 
 
 		bpmTime = (new Date().getTime() - bpmStart)/msecsAvg;
+        
 		//trace(bpmStart);
 
 //		debugDraw();
