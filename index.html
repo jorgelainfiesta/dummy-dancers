@@ -4,6 +4,7 @@
         <meta charset="utf-8">
 		<title>Dummy Dancers</title>
 		<link rel="stylesheet" href="stylesheets/main.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="stylesheets/bootstrap-tour-standalone.min.css">
 	</head>
 	<body>
@@ -12,8 +13,37 @@
         <canvas id="inputCapture" width="320" height="240" style="display: none"></canvas>
         <canvas id="debugCanvas" width="320" height="240" style="display: none"></canvas>
         
+        <nav>
+          <div class="player">
+            <button id="prev"><i class="fa fa-chevron-left"></i></button>
+            <button id="play"><i class="fa fa-play"></i></button>
+            <button id="next"><i class="fa fa-chevron-right"></i></button>
+            <ul class="songs">
+              <li>
+                <a href="#" data-song='audio/luna.mp3'>El Gordo – Luna León</a>
+              </li>
+              <li>
+                <a href="#" data-song='audio/riot.mp3'>Arctic Monkeys - Riot Van</a>
+              </li>
+              <li>
+                <a href="#" data-song='audio/summer.mp3'>Calvin Harris - Summer</a>
+              </li>
+              <li>
+                <em>Drag and drop any song to play it too.</em>
+              </li>
+            </ul>
+          </div>
+          <div class="dances">
+           <h3>Choose dance:</h3>
+            <button id="danceA" data-dance="0" class="active">A</button>
+            <button id="danceB" data-dance="100">B</button>
+            <button id="danceC" data-dance="200">C</button>
+          </div>
+          
+        </nav>
+        <div class="overlay"></div>
         <div id="result"></div>
-        <canvas id="audioDebug" width=330 height=250></canvas>
+        <canvas id="audioDebug" width=330 height=250 style="display: none"></canvas>
 <!--        <script src='scripts/lib/JSARToolKit.min.js'></script>-->
 		<script src="scripts/lib/require.js" data-main="scripts/app.js"></script>
 	</body>

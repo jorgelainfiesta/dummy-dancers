@@ -1,4 +1,4 @@
-define(['jquery', './animation', './renderer', 'tour', './audioHandler'], function ($, animation, renderer, tour, AudioHandler) {
+define(['jquery', './animation', './renderer', 'tour', './audioHandler', './gui'], function ($, animation, renderer, tour, AudioHandler) {
 
   var tour = new Tour({
     backdrop : false,

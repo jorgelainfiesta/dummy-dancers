@@ -136,6 +136,10 @@ define(['three', './scene', './renderer', './cameras', './data', './audioHandler
           animation.reset();
           animation.resetBlendWeights();
           animation.play();
+          if(data.get('changeDanceTo') >= 0){
+            data.set('currentDance', data.get('changeDanceTo'));
+            data.set('changeDanceTo', -1);
+          }
           animation.currentTime = data.get('currentDance');
           animRate = Math.exp(data.get('danceRate') * 6);
           pastHalf = false;

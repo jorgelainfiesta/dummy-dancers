@@ -2,7 +2,8 @@ define(['./opts'], function (opts) {
   var data = {
     loaded: 0,
     totalLoads: 7,
-    currentDance: 100,
+    currentDance: 0,
+    changeDanceTo: -1,
     danceRate: 0.1,
     animLength: 100,
     audioLevels: [],
@@ -26,7 +27,7 @@ define(['./opts'], function (opts) {
       volSens:1,
       beatHoldTime:40,
       beatDecayRate:0.97,
-      sampleURL: "audio/luna.mp3"
+      sampleURL: "audio/summer.mp3"
     },
     opts: opts
   };
