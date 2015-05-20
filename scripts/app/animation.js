@@ -125,10 +125,10 @@ define(['three', './scene', './renderer', './cameras', './data', './audioHandler
         var animation = animations[i];
         animation.update(animRate);
       
-        if(animation.currentTime >= data.get('currentDance') + 50 && !pastHalf) {
+        if(animation.currentTime >= data.get('currentDance') + 45 && !pastHalf) {
           animation.reset();
           animation.resetBlendWeights();
-          animation.currentTime = data.get('currentDance') + 50;
+          animation.currentTime = data.get('currentDance') + 51;
           console.info("half reached");
           pastHalf = true;
         }

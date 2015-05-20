@@ -27,7 +27,7 @@ define(['./opts'], function (opts) {
       volSens:1,
       beatHoldTime:40,
       beatDecayRate:0.97,
-      sampleURL: "audio/summer.mp3"
+      sampleURL: "audio/atoms.mp3"
     },
     opts: opts
   };

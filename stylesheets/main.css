@@ -76,7 +76,7 @@ nav {
 .songs em {
   color: #969696;
 }
-.dances h3 {
+.dances h3, .player h3 {
   text-transform: uppercase;
   color: #ccc;
   font-size: 12px;

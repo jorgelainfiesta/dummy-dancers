@@ -6,32 +6,48 @@ define(['jquery', './animation', './renderer', 'tour', './audioHandler', './gui'
       {
         orphan: true,
         title: "Welcome",
-        content: "This is a simple port view in 3D.",
+        content: "This is demo in which models dance to the rythm of the music.",
         backdrop : true,
         next: 1,
       },
       {
-        element: ".main",
-        title: "Choose mode",
-        content: "Select which mode you want to use. You can use a global view, the crane view or move the boat.",
+        element: ".player",
+        title: "Select Song",
+        content: "Choose which song you want to play. The models will dance to that song.",
         placement: "right",
         prev: 0,
         next : 2
       },
       {
-        element: ".contextual",
-        title: "Contextual Menu",
-        content: "If you're using the global or crane mode you can manipulate its parts here. In ship mode you can move the ship.",
+        element: ".songs li:last-child",
+        title: "Drop any song",
+        content: "You can also drag and drop any song to the browser and it will start playing it.",
         placement: "left",
-        prev : 1
+        prev : 1,
+        next: 3
+      },
+      {
+        element: ".dances",
+        title: "Select dance",
+        content: "Choose which set of movements the models will play.",
+        placement: "right",
+        prev : 2,
+        next: 4
+      },
+      {
+        element: "nav",
+        title: "Tap to toggle menu",
+        content: "Tap anywhere to show or hide this menu. Have fun!",
+        placement: "inside",
+        prev : 3,
       }
     ]
   });
   // Initialize the tour
-//  tour.init();
+  tour.init();
 
   // Start the tour
-//  tour.start();
+  tour.start();
 
   document.onselectstart = function() {
     return false;
