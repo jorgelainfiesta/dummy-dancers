@@ -1,7 +1,7 @@
 # dummy-dancers
 A set of 3D models with dance animations and augmented reality.
 
-This was an assignment for CC202 Computer Graphics at UVG.
+This was an assignment for CC3044 Computer Graphics at UVG.
 
 ###Video
 You can [see it working in youtube](http://youtu.be/0cklekenRMY) 
